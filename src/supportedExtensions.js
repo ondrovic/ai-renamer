@@ -1,4 +1,8 @@
-module.exports = [
+const imageTypes = ['.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff', '.gif', '.ico', '.webp']
+
+const videoTypes = ['.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv', '.webm', '.ts', '.mpg', '.mpeg', '.mpeg4', '.m4v']
+
+const allExtensions = [
   // general programming languages
   '.js', '.jsx', '.ts', '.tsx', '.py', '.rb', '.php', '.java', '.c', '.cpp',
   '.h', '.hpp', '.cs', '.go', '.rs', '.swift', '.kt', '.scala', '.groovy',
@@ -27,11 +31,19 @@ module.exports = [
   '.txt', '.log', '.diff', '.patch', '.proto', '.tex',
 
   // image files
-  '.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff',
+  ...imageTypes,
 
   // video files
-  '.mp4', '.avi', '.mov', '.wmv', '.flv', '.mkv', '.webm',
+  ...videoTypes,
 
   // handled separately in code
   '.pdf'
 ]
+
+module.exports = {
+  imageTypes,
+  videoTypes,
+  allExtensions,
+  // Keep the default export for backward compatibility
+  default: allExtensions
+}

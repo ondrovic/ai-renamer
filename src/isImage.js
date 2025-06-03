@@ -1,4 +1,5 @@
+const { imageTypes } = require('./supportedExtensions')
+
 module.exports = ({ ext }) => {
-  const imageTypes = ['.jpg', '.jpeg', '.png', '.bmp', '.tif', '.tiff']
-  return imageTypes.includes(ext)
+  return imageTypes.includes(ext.toLowerCase())
 }

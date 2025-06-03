@@ -15,7 +15,11 @@ module.exports = async ({
   defaultLanguage,
   defaultProvider,
   defaultCustomPrompt,
-  defaultIncludeSubdirectories
+  defaultIncludeSubdirectories,
+  defaultVideoSummary,
+  defaultSummaryMode,
+  defaultSummaryInterval,
+  defaultSummaryMaxFrames
 }) => {
   try {
     const provider = defaultProvider || 'ollama'
@@ -39,7 +43,7 @@ module.exports = async ({
     const model = defaultModel || await chooseModel({ baseURL, provider })
     console.log(`⚪ Model: ${model}`)
 
-    const frames = defaultFrames || 3
+    const frames = defaultFrames || 10
     console.log(`⚪ Frames: ${frames}`)
 
     const _case = defaultCase || 'kebabCase'
@@ -59,6 +63,21 @@ module.exports = async ({
       console.log(`⚪ Custom Prompt: ${customPrompt}`)
     }
 
+    const useVideoSummary = defaultVideoSummary || false
+    console.log(`⚪ Video Summary Mode: ${useVideoSummary}`)
+
+    const summaryMode = defaultSummaryMode || 'standard'
+    if (useVideoSummary) {
+      console.log(`⚪ Summary Mode: ${summaryMode}`)
+    }
+
+    const summaryInterval = defaultSummaryInterval || 30
+    const summaryMaxFrames = defaultSummaryMaxFrames
+    if (useVideoSummary) {
+      console.log(`⚪ Summary Interval: ${summaryInterval}s`)
+      console.log(`⚪ Summary Max Frames: ${summaryMaxFrames}`)
+    }
+
     console.log('--------------------------------------------------')
 
     const stats = await fs.stat(inputPath)
@@ -73,7 +92,11 @@ module.exports = async ({
       provider,
       inputPath,
       includeSubdirectories,
-      customPrompt
+      customPrompt,
+      useVideoSummary,
+      summaryMode,
+      summaryInterval,
+      summaryMaxFrames
     }
 
     if (stats.isDirectory()) {

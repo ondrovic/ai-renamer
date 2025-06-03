@@ -1,8 +1,7 @@
 const path = require('path')
-
-const supportedExtensions = require('./supportedExtensions')
+const { allExtensions } = require('./supportedExtensions')
 
 module.exports = ({ filePath }) => {
   const ext = path.extname(filePath).toLowerCase()
-  return supportedExtensions.includes(ext)
+  return allExtensions.includes(ext)
 }

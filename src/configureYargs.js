@@ -3,6 +3,7 @@ const path = require('path')
 const yargs = require('yargs')
 const fs = require('fs').promises
 const { hideBin } = require('yargs/helpers')
+const { SUMMARY_MODES } = require('./getVideoSummary')
 
 const CONFIG_FILE = path.join(os.homedir(), 'ai-renamer.json')
 
@@ -77,6 +78,27 @@ module.exports = async () => {
       alias: 'r',
       type: 'string',
       description: 'Add a custom prompt to the LLM (e.g. "Only describe the background")'
+    })
+    .option('video-summary', {
+      alias: 'vs',
+      type: 'boolean',
+      description: 'Generate filename from video summary instead of keyframes'
+    })
+    .option('summary-mode', {
+      alias: 'sm',
+      type: 'string',
+      description: `Set video summary mode (${Object.values(SUMMARY_MODES).join(', ')})`,
+      choices: Object.values(SUMMARY_MODES)
+    })
+    .option('summary-interval', {
+      alias: 'si',
+      type: 'number',
+      description: 'Extract one frame every N seconds for video summary (e.g. 30, 60)'
+    })
+    .option('summary-max-frames', {
+      alias: 'smf',
+      type: 'number',
+      description: 'Maximum number of frames to extract for video summary'
     }).argv
 
   if (argv.help) {
@@ -131,6 +153,26 @@ module.exports = async () => {
 
   if (argv['custom-prompt']) {
     config.defaultCustomPrompt = argv['custom-prompt']
+    await saveConfig({ config })
+  }
+
+  if (argv['video-summary']) {
+    config.defaultVideoSummary = argv['video-summary']
+    await saveConfig({ config })
+  }
+
+  if (argv['summary-mode']) {
+    config.defaultSummaryMode = argv['summary-mode']
+    await saveConfig({ config })
+  }
+
+  if (argv['summary-interval']) {
+    config.defaultSummaryInterval = argv['summary-interval']
+    await saveConfig({ config })
+  }
+
+  if (argv['summary-max-frames']) {
+    config.defaultSummaryMaxFrames = argv['summary-max-frames']
     await saveConfig({ config })
   }
 
